@@ -59,4 +59,22 @@ public class UserController {
         List<ShortUserEntity> users = Arrays.asList(response.getBody());
         return ResponseEntity.ok(users);
     }
+
+    @PutMapping("/update/{uid}")
+    public ResponseEntity<String> updateUser(
+            @PathVariable("uid") String uid,
+            @RequestBody UserDTO userDTO) {
+        String url = weavyServerUrl + "/api/users/" + uid;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + apiKey);
+        headers.set("Content-Type", "application/json");
+
+        HttpEntity<UserDTO> requestEntity = new HttpEntity<>(userDTO, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                url, HttpMethod.PUT, requestEntity, String.class);
+
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
 }
