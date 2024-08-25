@@ -1,6 +1,7 @@
 package com.weavy.demo.controller;
 
 import com.weavy.demo.dto.UserDTO;
+import com.weavy.demo.entity.ShortUserEntity;
 import com.weavy.demo.entity.UserEntity;
 import com.weavy.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -8,14 +9,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/user")
@@ -44,5 +43,20 @@ public class UserController {
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
 
     }
-    
+
+    @GetMapping("/list")
+    public ResponseEntity<List<ShortUserEntity>> getUsers() {
+        String url = weavyServerUrl + "/api/users";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + apiKey);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<ShortUserEntity> response = restTemplate.exchange(
+                url, HttpMethod.GET, requestEntity, ShortUserEntity.class);
+
+        List<ShortUserEntity> users = Arrays.asList(response.getBody());
+        return ResponseEntity.ok(users);
+    }
 }

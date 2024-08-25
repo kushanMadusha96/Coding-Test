@@ -2,8 +2,6 @@ package com.weavy.demo.mapper;
 
 import com.weavy.demo.dto.UserDTO;
 import com.weavy.demo.entity.UserEntity;
-import lk.ijse.aad.helloeshoe.dto.*;
-import lk.ijse.aad.helloeshoe.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
