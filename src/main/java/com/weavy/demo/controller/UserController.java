@@ -91,4 +91,19 @@ public class UserController {
 
         return ResponseEntity.ok(response.getBody());
     }
+
+    @DeleteMapping("/remove/{uid}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable("uid") String uid) {
+        String url = weavyServerUrl + "/api/users/" + uid + "/trash";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + apiKey);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<Void> response = restTemplate.exchange(
+                url, HttpMethod.POST, requestEntity, Void.class);
+
+        return ResponseEntity.status(response.getStatusCode()).build();
+    }
 }
