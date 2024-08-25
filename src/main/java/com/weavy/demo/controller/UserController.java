@@ -77,4 +77,18 @@ public class UserController {
 
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
+    @GetMapping("/list/{uid}")
+    public ResponseEntity<UserEntity> getUserById(@PathVariable("uid") String uid) {
+        String url = weavyServerUrl + "/api/users/" + uid;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + apiKey);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<UserEntity> response = restTemplate.exchange(
+                url, HttpMethod.GET, requestEntity, UserEntity.class);
+
+        return ResponseEntity.ok(response.getBody());
+    }
 }
